@@ -1,6 +1,16 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "es6",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "removeComments": true,
+    "noImplicitAny": false,
+    "suppressImplicitAnyIndexErrors": true,
+    "jsx": "react",
+    "outDir": "./js",
     "lib": [
       "dom",
       "dom.iterable",
@@ -12,14 +22,18 @@
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
-    "module": "esnext",
-    "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "noEmit": true,
-    "jsx": "react"
+    "noEmit": true
   },
+  "typedocOptions": {
+    "mode": "modules",
+    "out": "docs"
+  },
+  "exclude": [
+    "node_modules"
+  ],
   "include": [
-    "src"
+    "src/**/*"
   ]
 }
