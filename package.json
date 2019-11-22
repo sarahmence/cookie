@@ -1,22 +1,37 @@
 {
+  "description": "Open-source Chip-8 emulator",
+  "author": "Andrew Davis",
   "name": "cookie",
   "version": "0.1.0",
-  "private": true,
+  "build": {
+    "appId": "com.ahdavis.cookie"
+  },
+  "main": "public/electron.js",
+  "homepage": "./",
+  "license": "GPL-3.0+",
+  "private": false,
   "dependencies": {
     "@types/jest": "24.0.23",
     "@types/node": "12.12.11",
     "@types/react": "16.9.12",
     "@types/react-dom": "16.9.4",
+    "cross-env": "^6.0.3",
+    "electron-is-dev": "^1.1.0",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "react-scripts": "3.2.0",
     "typescript": "3.7.2"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "react-start": "react-scripts start",
+    "react-build": "react-scripts build",
+    "react-test": "react-scripts test",
+    "react-eject": "react-scripts eject",
+    "electron-build": "electron-builder",
+    "release": "yarn react-build && electron-builder --publish=always",
+    "build": "yarn react-build && yarn electron-build",
+    "start": "concurrently \"cross-env BROWSER=none yarn react-start\" \"wait-on http://localhost:3000 && electron .\"",
+    "doc": "rm -rf ./docs && typedoc src/"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -32,5 +47,15 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "concurrently": "^5.0.0",
+    "electron": "^7.1.2",
+    "electron-builder": "^21.2.0",
+    "enzyme": "^3.10.0",
+    "enzyme-adapter-react-16": "^1.15.1",
+    "enzyme-to-json": "^3.4.3",
+    "typedoc": "^0.15.2",
+    "wait-on": "^3.3.0"
   }
 }
