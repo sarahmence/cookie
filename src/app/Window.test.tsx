@@ -25,19 +25,22 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { shallow } from 'enzyme';
 import { Window } from './Window';
+import { Frame } from '../gfx/Frame';
 
 //start of tests
 describe('Window', () => {
 	//this test verifies that the window renders without crashing
 	it('Renders without crashing', () => {
-	  const div = document.createElement('div');
-	  ReactDOM.render(<Window />, div);
-	  ReactDOM.unmountComponentAtNode(div);
+		let frame = new Frame();
+		const div = document.createElement('div');
+		ReactDOM.render(<Window frame={frame} />, div);
+		ReactDOM.unmountComponentAtNode(div);
 	});
 
 	//this test verifies that the window matches its snapshot
 	it('Renders to snapshot', () => {
-		const win = shallow(<Window />);
+		let frame = new Frame();
+		const win = shallow(<Window frame={frame} />);
 		expect(win).toMatchSnapshot();
 	});
 });

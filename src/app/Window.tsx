@@ -24,6 +24,7 @@
 import * as React from 'react';
 import { WindowProps } from '../props/WindowProps';
 import { WindowState } from '../state/WindowState';
+import { Screen } from '../gfx/Screen';
 
 /**
  * The window of the app
@@ -46,9 +47,8 @@ export class Window extends React.Component<WindowProps, WindowState> {
 	 * @returns A React DOM representing the `Window`
 	 */
 	public render(): React.ReactNode {
-		//TODO: Render proper components
 		return (
-			<h1>Hello, World!</h1>
+			<Screen frame={this.props.frame} />
 		);
 	}
 }
