@@ -29,7 +29,7 @@ import { Frame } from './Frame';
 
 //start of tests
 describe('PixelRow', () => {
-	//this test verifies that the pixel renders without crashing
+	//this test verifies that the row renders without crashing
 	it('Renders without crashing', () => {
 	  	let frame = new Frame();
 		const div = document.createElement('div');
@@ -37,7 +37,7 @@ describe('PixelRow', () => {
 		ReactDOM.unmountComponentAtNode(div);
 	});
 
-	//this test verifies that the pixel matches its snapshot
+	//this test verifies that the row matches its snapshot
 	it('Renders to snapshot', () => {
 		let frame = new Frame();
 		const row = shallow(<PixelRow frame={frame} index={0} />);
