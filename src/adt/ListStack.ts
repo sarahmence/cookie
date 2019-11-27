@@ -108,7 +108,7 @@ export class ListStack<T> implements Stack<T> {
 		let ret = this.peek();
 
 		//remove the top node
-		this._top = this._top.next;
+		this._top = this._top!.next;
 
 		//decrement the size
 		this._size--;
