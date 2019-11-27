@@ -25,19 +25,22 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { shallow } from 'enzyme';
 import App from './App';
+import { Frame } from '../gfx/Frame';
 
 //start of tests
 describe('App', () => {
 	//this test verifies that the app renders without crashing
 	it('Renders without crashing', () => {
-	  const div = document.createElement('div');
-	  ReactDOM.render(<App />, div);
-	  ReactDOM.unmountComponentAtNode(div);
+		let frame = new Frame();
+		const div = document.createElement('div');
+		ReactDOM.render(<App frame={frame}/>, div);
+		ReactDOM.unmountComponentAtNode(div);
 	});
 
 	//this test verifies that the app matches its snapshot
 	it('Renders to snapshot', () => {
-		const app = shallow(<App />);
+		let frame = new Frame();
+		const app = shallow(<App frame={frame}/>);
 		expect(app).toMatchSnapshot();
 	});
 });

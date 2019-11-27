@@ -49,7 +49,7 @@ export default class App extends React.Component<AppProps, AppState> {
 	public render(): React.ReactNode {
 		//render the window
 		return (
-			<Window />
+			<Window frame={this.props.frame} />
 		);
 	}
 }

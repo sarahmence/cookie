@@ -20,13 +20,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-//no imports
+//import
+import { Frame } from '../gfx/Frame';
 
 /**
  * The properties of the [[App]] component
  */
 export interface AppProps {
-	//TODO: Add properties
+	/**
+	 * The current emulation frame
+	 */
+	frame: Frame;
 }
 
 //end of file
