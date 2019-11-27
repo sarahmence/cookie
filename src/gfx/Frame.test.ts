@@ -58,13 +58,20 @@ describe('Frame', () => {
 	//this test checks clearing the frame
 	it('Clear frame', () => {
 		let frame = new Frame();
-		frame.toggleAtCoords(0, 0);
-		frame.toggleAtCoords(1, 1);
-		expect(frame.valueAtCoords(0, 0)).toBe(PixelValue.ON);
-		expect(frame.valueAtCoords(1, 1)).toBe(PixelValue.ON);
+		for(let x = 0; x < Constants.WIN_WIDTH; x++) {
+			for(let y = 0; y < Constants.WIN_HEIGHT; y++) {
+				frame.toggleAtCoords(x, y);
+				expect(frame.valueAtCoords(x, y))
+					.toBe(PixelValue.ON);
+			}
+		}
 		frame.clear();
-		expect(frame.valueAtCoords(0, 0)).toBe(PixelValue.OFF);
-		expect(frame.valueAtCoords(1, 1)).toBe(PixelValue.OFF);
+		for(let x = 0; x < Constants.WIN_WIDTH; x++) {
+			for(let y = 0; y < Constants.WIN_HEIGHT; y++) {
+				expect(frame.valueAtCoords(x, y))
+					.toBe(PixelValue.OFF);
+			}
+		}
 	});
 });
 
