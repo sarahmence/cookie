@@ -97,7 +97,7 @@ export class Frame {
 		}
 
 		//and toggle the pixel
-		if(this._pixels[x][y] == PixelValue.OFF) {
+		if(this._pixels[x][y] === PixelValue.OFF) {
 			this._pixels[x][y] = PixelValue.ON;
 			return false;
 		} else {
