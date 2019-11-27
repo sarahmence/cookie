@@ -30,9 +30,9 @@ import { Pixel } from './Pixel';
 describe('Pixel', () => {
 	//this test verifies that the pixel renders without crashing
 	it('Renders without crashing', () => {
-	  const div = document.createElement('div');
-	  ReactDOM.render(<Pixel isOn={true} />, div);
-	  ReactDOM.unmountComponentAtNode(div);
+		const div = document.createElement('div');
+		ReactDOM.render(<Pixel isOn={true} />, div);
+		ReactDOM.unmountComponentAtNode(div);
 	});
 
 	//this test verifies that the pixel matches its snapshot
