@@ -26,9 +26,13 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './app/App';
 import * as serviceWorker from './util/serviceWorker';
+import { Frame } from './gfx/Frame';
+
+//create the frame
+let frame = new Frame();
 
 //render the app component
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(<App frame={frame}/>, document.getElementById('root'));
 
 //and start the service worker
 serviceWorker.register();
