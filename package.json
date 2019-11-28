@@ -25,8 +25,8 @@
   },
   "scripts": {
     "react-start": "react-app-rewired start",
-    "react-build": "react-scripts build",
-    "react-test": "react-scripts test",
+    "react-build": "react-app-rewired build",
+    "react-test": "react-app-rewired test",
     "react-eject": "react-scripts eject",
     "electron-build": "electron-builder",
     "release": "yarn react-build && electron-builder --publish=always",
