@@ -42,6 +42,26 @@ declare module 'Constants' {
 		 * The height of the window in emulator pixels
 		 */
 		static readonly WIN_HEIGHT: number;
+
+		/**
+		 * The address of the start of font memory
+		 */
+		static readonly FNT_START: number;
+
+		/**
+		 * The address of the end of font memory
+		 */
+		static readonly FNT_END: number;
+
+		/**
+		 * The address of the start of program memory
+		 */
+		static readonly PROG_START: number;
+
+		/**
+		 * The number of total bytes available to the emulator
+		 */
+		static readonly MEM_SIZE: number;
 	}
 
 	//export the class

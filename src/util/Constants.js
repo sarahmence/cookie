@@ -39,6 +39,26 @@ class Constants {
 	static get WIN_HEIGHT() {
 		return 32;
 	}
+
+	//the address of the start of font memory
+	static get FNT_START() {
+		return 0x050;
+	}
+
+	//the address of the end of font memory
+	static get FNT_END() {
+		return 0x0A0;
+	}
+
+	//the address of the start of program memory
+	static get PROG_START() {
+		return 0x200;
+	}
+
+	//the number of total bytes available to the emulator
+	static get MEM_SIZE() {
+		return 0x1000;
+	}
 }
 
 //export the class
