@@ -24,7 +24,7 @@
     "typescript": "3.7.2"
   },
   "scripts": {
-    "react-start": "react-scripts start",
+    "react-start": "react-app-rewired start",
     "react-build": "react-scripts build",
     "react-test": "react-scripts test",
     "react-eject": "react-scripts eject",
@@ -57,6 +57,7 @@
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.15.1",
     "enzyme-to-json": "^3.4.3",
+    "react-app-rewired": "^2.1.5",
     "typedoc": "^0.15.2",
     "wait-on": "^3.3.0"
   }
