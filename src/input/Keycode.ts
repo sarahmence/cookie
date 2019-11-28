@@ -41,8 +41,7 @@ export enum Keycode {
 	KZ = 0xC, //Z key
 	KX = 0xD, //X key
 	KC = 0xE, //C key
-	KV = 0xF, //V key
-	KNULL = 0x10 //null key
+	KV = 0xF  //V key
 }
 
 //end of file
