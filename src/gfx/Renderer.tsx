@@ -25,7 +25,7 @@ import * as ReactDOM from 'react-dom';
 import * as React from 'react';
 import App from '../app/App';
 import { Frame } from './Frame';
-import { PixelValue } from './PixelValue';
+import { Sprite } from './Sprite';
 
 /**
  * A graphics renderer
@@ -65,7 +65,35 @@ export class Renderer {
 		return this._curFrame.toggleAtCoords(x, y);
 	}
 
-	//TODO: Add method for drawing sprites
+	/**
+	 * Draws a [[Sprite]] to the screen at given coordinates
+	 *
+	 * @param spr The `Sprite` to draw
+	 * @param x The column to draw the `Sprite` to
+	 * @param y The row to draw the `Sprite` to
+	 *
+	 * @returns Whether any pixels were turned from on to off
+	 */
+	public drawSprite(spr: Sprite, x: number, y: number): boolean {
+		//declare the return value
+		let ret = false;
+
+		//loop and draw the sprite
+		for(let xLine = 0; xLine < 8; xLine++) {
+			for(let yLine = 0; yLine < spr.height; yLine++) {
+				if(spr.isSetAt(xLine, yLine)) {
+					if(this.toggleAtCoords(
+						x + xLine,
+						y + yLine)) {
+						ret = true;
+					}
+				}
+			}
+		}
+
+		//and return the return value
+		return ret;
+	}
 
 	/**
 	 * Clears the screen
