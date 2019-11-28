@@ -26,13 +26,17 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './app/App';
 import * as serviceWorker from './util/serviceWorker';
-import { Frame } from './gfx/Frame';
+import { Renderer } from './gfx/Renderer';
 
-//create the frame
-let frame = new Frame();
+//create the renderer
+let rend = new Renderer();
 
-//render the app component
-ReactDOM.render(<App frame={frame}/>, document.getElementById('root'));
+//workaround for setting the renderer's update flag
+rend.toggleAtCoords(1, 1);
+rend.toggleAtCoords(1, 1);
+
+//update the screen
+rend.update();
 
 //and start the service worker
 serviceWorker.register();
