@@ -25,37 +25,51 @@
 //class definition
 // @ts-ignore
 class Constants {
-	//the size of a side of an emulator pixel
+	/**
+	 * The size of a side of an emulator pixel
+	 */
 	static get PIXEL_DIM() {
 		return 16;
 	}
-
-	//the width of the window in emulator pixels
+	
+	/**
+	 * The width of the window in emulator pixels
+	 */
 	static get WIN_WIDTH() {
 		return 64;
 	}
-
-	//the height of the window in emulator pixels
+	
+	/**
+	 * The height of the window in emulator pixels
+	 */
 	static get WIN_HEIGHT() {
 		return 32;
 	}
 
-	//the address of the start of font memory
+	/**
+	 * The address of the start of font memory
+	 */
 	static get FNT_START() {
 		return 0x050;
 	}
 
-	//the address of the end of font memory
+	/**
+	 * The address of the end of font memory
+	 */
 	static get FNT_END() {
 		return 0x0A0;
 	}
 
-	//the address of the start of program memory
+	/**
+	 * The address of the start of program memory
+	 */
 	static get PROG_START() {
 		return 0x200;
 	}
 
-	//the number of total bytes available to the emulator
+	/**
+	 * The number of total bytes available to the emulator
+	 */
 	static get MEM_SIZE() {
 		return 0x1000;
 	}
