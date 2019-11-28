@@ -20,8 +20,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-//import
+//imports
 import { Constants } from '../util/Constants';
+import { Sprite } from '../gfx/Sprite';
 
 /**
  * Manages emulator RAM
@@ -110,7 +111,27 @@ export class Memory {
 		this.pokeByte(lsb, addr + 1);
 	}
 
-	//TODO: Add method for retrieving a sprite
+	/**
+	 * Retrieves a [[Sprite]] from memory
+	 * with a given height
+	 *
+	 * @param addr The address of the first byte of the `Sprite`
+	 * @param height The height of the `Sprite` (in pixels)
+	 *
+	 * @returns The sprite described by the arguments
+	 */
+	public getSprite(addr: number, height: number): Sprite {
+		//create an array to hold the sprite data
+		let sprData = new Array<number>();
+
+		//loop and get the sprite data
+		for(let i = 0; i < height; i++) {
+			sprData.push(this.peekByte(addr + i));
+		}
+
+		//and return the retrieved sprite
+		return new Sprite(sprData);
+	}
 	
 	//TODO: Add method for loading a program
 	
