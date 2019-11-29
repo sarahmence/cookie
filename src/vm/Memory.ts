@@ -23,6 +23,7 @@
 //imports
 import { Constants } from '../util/Constants';
 import { Sprite } from '../gfx/Sprite';
+import { Program } from './Program';
 
 /**
  * Manages emulator RAM
@@ -133,7 +134,32 @@ export class Memory {
 		return new Sprite(sprData);
 	}
 	
-	//TODO: Add method for loading a program
+	/**
+	 * Loads a [[Program]] into memory
+	 *
+	 * @param prog The `Program` to load
+	 *
+	 * @returns Whether the loading succeeded
+	 */
+	public loadProgram(prog: Program): boolean {
+		//make sure the program is not too long
+		if((prog.length + Constants.PROG_START)  
+			>= Constants.MEM_SIZE) {
+			return false;	
+		}
+
+		//load the program
+		for(let i = 0; i < prog.length; i++) {
+			let curByte = prog.byteAtOffset(i);
+			if(curByte !== null) {
+				this.pokeByte(curByte, 
+						i + Constants.PROG_START);
+			}
+		}
+
+		//and return a success
+		return true;
+	}
 	
 	/**
 	 * Initializes font ROM
