@@ -11316,6 +11316,11 @@ typedoc@^0.15.2:
     typedoc-default-themes "^0.6.1"
     typescript "3.7.x"
 
+typescript-map@^0.0.7:
+  version "0.0.7"
+  resolved "https://registry.yarnpkg.com/typescript-map/-/typescript-map-0.0.7.tgz#69d1937af203d1c9a32fc20ee3d8813e8f1a745f"
+  integrity sha512-qLGAeshAnryHN1ycLS4nk+7195MYXbrCzI62bXl8TEqigD5otgHUGIdWsdn5MsbAX3ba5ZtkKEAM0LgaVUAdnQ==
+
 typescript@3.7.2, typescript@3.7.x:
   version "3.7.2"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.7.2.tgz#27e489b95fa5909445e9fef5ee48d81697ad18fb"
