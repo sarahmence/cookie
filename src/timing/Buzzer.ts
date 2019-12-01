@@ -93,7 +93,23 @@ export class Buzzer {
 		if(this._playing) {
 			this._osc.stop(this._ctxt.currentTime);
 			this._playing = false;
+			this.refreshContext();
 		}
+	}
+
+	/**
+	 * Refreshes the context
+	 */
+	private refreshContext(): void {
+		this._osc = this._ctxt.createOscillator();
+		this._gain = this._ctxt.createGain();
+
+		//and set up audio
+		this._osc.connect(this._gain);
+		this._osc.frequency.value = 520;
+		this._osc.type = 'square';
+		this._gain.connect(this._ctxt.destination);
+		this._gain.gain.value = 0.5;
 	}
 }
 
