@@ -44,7 +44,11 @@ function createWindow() {
 					height: winHeight,
 					webPreferences: {
 						nodeIntegration: true
-					}, autoHideMenuBar: true});
+					}, 
+					autoHideMenuBar: true,
+					fullscreenable: false,
+					resizable: false,
+					maximizable: false});
 
 	//load the app
 	mainWindow.loadURL(
