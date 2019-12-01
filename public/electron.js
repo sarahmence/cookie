@@ -26,7 +26,7 @@ const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
 const path = require("path");
 const isDev = require("electron-is-dev");
-const Constants = require("../src/util/Constants").Constants;
+const Constants = require("./Constants").Constants;
 
 //declare the main window
 let mainWindow;
@@ -48,7 +48,8 @@ function createWindow() {
 					autoHideMenuBar: true,
 					fullscreenable: false,
 					resizable: false,
-					maximizable: false});
+					maximizable: false,
+	icon: path.resolve("assets/icons/png/64x64.png")});
 
 	//load the app
 	mainWindow.loadURL(
