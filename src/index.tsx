@@ -23,17 +23,25 @@
 //imports
 import './index.css';
 import * as serviceWorker from './util/serviceWorker';
-import { Renderer } from './gfx/Renderer';
+import * as MainLoop from 'mainloop.js';
+import { Program } from './vm/Program';
+import { chooseFile } from './util/chooseFile';
+import { CPU } from './vm/CPU';
 
-//create the renderer
-let rend = new Renderer();
+//choose a ROM
+let path: string | undefined = undefined;
+while(path === undefined) {
+	path = chooseFile();
+}
 
-//workaround for setting the renderer's update flag
-rend.toggleAtCoords(1, 1);
-rend.toggleAtCoords(1, 1);
+//create a program
+let prog = new Program(path);
 
-//update the screen
-rend.update();
+//create a CPU instance
+let cpu = new CPU(prog);
+
+//start the main loop
+MainLoop.setBegin(cpu.emulateCycle.bind(cpu)).start();
 
 //and start the service worker
 serviceWorker.register();
