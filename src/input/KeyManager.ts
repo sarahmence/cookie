@@ -100,7 +100,7 @@ export class KeyManager {
 		let kc = KeyManager.codeForChar(str);
 
 		//update the key states
-		if(kc) {
+		if(kc !== null) {
 			this._keys[kc].press();
 		}
 
