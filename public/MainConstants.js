@@ -1,5 +1,5 @@
 /*
- * Constants.js
+ * MainConstants.js
  * Defines a class that manages constants
  * Created on 11/22/2019
  * Created by Andrew Davis
@@ -24,7 +24,7 @@
 
 //class definition
 // @ts-ignore
-class Constants {
+class MainConstants {
 	/**
 	 * The size of a side of an emulator pixel
 	 */
@@ -45,37 +45,9 @@ class Constants {
 	static get WIN_HEIGHT() {
 		return 32;
 	}
-
-	/**
-	 * The address of the start of font memory
-	 */
-	static get FNT_START() {
-		return 0x050;
-	}
-
-	/**
-	 * The address of the end of font memory
-	 */
-	static get FNT_END() {
-		return 0x0A0;
-	}
-
-	/**
-	 * The address of the start of program memory
-	 */
-	static get PROG_START() {
-		return 0x200;
-	}
-
-	/**
-	 * The number of total bytes available to the emulator
-	 */
-	static get MEM_SIZE() {
-		return 0x1000;
-	}
 }
 
 //export the class
-exports.Constants = Constants;
+exports.MainConstants = MainConstants;
 
 //end of file

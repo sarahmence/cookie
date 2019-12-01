@@ -26,7 +26,7 @@ const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
 const path = require("path");
 const isDev = require("electron-is-dev");
-const Constants = require("./Constants").Constants;
+const MainConstants = require("./MainConstants").MainConstants;
 
 //declare the main window
 let mainWindow;
@@ -36,8 +36,8 @@ let mainWindow;
  */
 function createWindow() {
 	//calculate the width and height of the window
-	let winWidth = Constants.WIN_WIDTH * Constants.PIXEL_DIM;
-	let winHeight = Constants.WIN_HEIGHT * Constants.PIXEL_DIM;
+	let winWidth = MainConstants.WIN_WIDTH * MainConstants.PIXEL_DIM;
+	let winHeight = MainConstants.WIN_HEIGHT * MainConstants.PIXEL_DIM;
 
 	//create the window object
 	mainWindow = new BrowserWindow({ width: winWidth, 
