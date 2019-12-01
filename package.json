@@ -4,7 +4,19 @@
   "name": "Cookie",
   "version": "0.1.0",
   "build": {
-    "appId": "com.ahdavis.cookie"
+    "appId": "com.ahdavis.cookie",
+    "productName": "Cookie",
+    "copyright": "Copyright (C) 2019 ${author}",
+    "mac": {
+	"category": "public.app-category.games"
+    },
+    "files": [
+	"build/**/*",
+	"node_modules/**/*"
+    ],
+    "directories": {
+	"buildResources": "assets"
+    }
   },
   "main": "public/electron.js",
   "homepage": "./",
