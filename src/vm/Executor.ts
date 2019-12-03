@@ -25,6 +25,6 @@
 /**
  * A function that executes a given opcode
  */
-export type Executor = (opcode: number) => Promise<boolean>;
+export type Executor = (opcode: number) => void;
 
 //end of file

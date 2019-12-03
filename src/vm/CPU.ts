@@ -93,6 +93,16 @@ export class CPU {
 	 */
 	private _dispatchTable: TSMap<number, Executor>;
 
+	/**
+	 * Is the CPU currently blocked for an input event?
+	 */
+	private _blockedForInput: boolean;
+
+	/**
+	 * The current opcode being executed
+	 */
+	private _curOpcode: number;
+
 	//methods
 	
 	/**
@@ -133,6 +143,12 @@ export class CPU {
 		this._dispatchTable = new TSMap<number, Executor>();
 		this.initDispatchTable();
 
+		//initialize the block flag
+		this._blockedForInput = false;
+
+		//initialize the opcode
+		this._curOpcode = 0x0000;
+
 		//load the program
 		let res = this._memory.loadProgram(prog);
 
@@ -146,32 +162,73 @@ export class CPU {
 	 * Emulates one processor cycle
 	 */
 	public emulateCycle(): void {
+		if(!this.checkInputBlock()) {
+			return;
+		}
+
 		//get the opcode
-		let opcode = this._memory.peekWord(this._pc);
+		this._curOpcode = this._memory.peekWord(this._pc);
 
 		//execute it
-		this.executeOpcode(opcode);
+		this.executeOpcode(this._curOpcode);
 
 		//and refresh the renderer
 		this._rend.update();
 	}
 
 	/**
+	 * Checks the input blocking flag to see if
+	 * emulation should continue, checks for a key event,
+	 * stores the key in the proper register, and returns
+	 * whether emulation should continue
+	 *
+	 * @returns Whether emulation should continue for the cycle
+	 */
+	private checkInputBlock(): boolean {
+		//check the input block flag
+		if(this._blockedForInput) {
+			//check the opcode
+			if((this._curOpcode & 0xF0FF) === 0xF00A) {
+				//get the register index
+				let ridx = (this._curOpcode & 0x0F00) 
+						>> 8;
+
+				//check for keydown
+				if(this._keyMgr.keysAreDown()) {
+					//loop and get the down key
+					for(let k = Keycode.K1;
+						k <= Keycode.KV; k++) {
+						if(this._keyMgr
+						.stateForKey(k) ===
+						KeyState.DOWN) {
+							this._regs[ridx]
+							.value = k;
+						}
+					}
+					this._blockedForInput = false;
+					return true;
+				} else {
+					return false;
+				}
+			} else {
+				return false;
+			}
+		} else {
+			return true;
+		}
+	}
+
+	/**
 	 * Executes a single opcode
 	 *
 	 * @param op The opcode to evaluate
-	 *
-	 * @returns Whether the opcode evaluated successfully (always true)
 	 */
-	private async executeOpcode(op: number): Promise<boolean> {
+	private executeOpcode(op: number): void {
 		//get the executor from the dispatch table
 		let exe = this._dispatchTable.get(op & 0xF000);
 
-		//execute it
-		let res = await exe(op);
-		
-		//and return the result
-		return res;
+		//and execute it
+		exe(op);
 	}
 
 	/**
@@ -217,10 +274,8 @@ export class CPU {
 	 * Executes an opcode of the form 0x00XX
 	 *
 	 * @param opcode The opcode to execute
-	 *
-	 * @returns Whether the opcode was executed successfully
 	 */
-	private async execute0x00XX(opcode: number): Promise<boolean> {
+	private execute0x00XX(opcode: number): void {
 		//determine which opcode should be executed
 		switch(opcode & 0x000F) {
 			//clear screen (00E0)
@@ -252,40 +307,29 @@ export class CPU {
 			default: {
 				console.log('Unknown opcode [0x0000]: 0x'
 						+ opcode.toString(16));
-				return false;
 			}
 		}
-		
-		//and return a success
-		return true;
 	}
 
 	/**
 	 * Executes an opcode of the form 0x1NNN (goto NNN)
 	 *
 	 * @param opcode The opcode to execute
-	 *
-	 * @returns Whether the opcode executed successfully
 	 */
-	private async execute0x1NNN(opcode: number): Promise<boolean> {
+	private execute0x1NNN(opcode: number): void {
 		//get the address to jump to
 		let addr = opcode & 0x0FFF;
 
-		//jump to that address
+		//and jump to that address
 		this._pc = addr;
-
-		//and return a success
-		return true;
 	}
 
 	/**
 	 * Executes an opcode of the form 0x2NNN (subroutine call)
 	 *
 	 * @param opcode The opcode to evaluate
-	 *
-	 * @returns Whether the opcode evaluated successfully
 	 */
-	private async execute0x2NNN(opcode: number): Promise<boolean> {
+	private execute0x2NNN(opcode: number): void {
 		//get the address of the subroutine
 		let addr = opcode & 0x0FFF;
 
@@ -295,11 +339,8 @@ export class CPU {
 		//push the program counter onto the call stack
 		this._stack.push(this._pc);
 
-		//jump to the address of the subroutine
+		//and jump to the address of the subroutine
 		this._pc = addr;
-
-		//and return a success
-		return true;
 	}
 
 	/**
@@ -307,10 +348,8 @@ export class CPU {
 	 * (constant equals comparison)
 	 *
 	 * @param opcode The opcode to execute
-	 *
-	 * @returns Whether the opcode executed successfully
 	 */
-	private async execute0x3XNN(opcode: number): Promise<boolean> {
+	private execute0x3XNN(opcode: number): void {
 		//get the index of the register
 		let idx = (opcode & 0x0F00) >> 8;
 
@@ -322,11 +361,8 @@ export class CPU {
 			this._pc += 2;
 		}
 
-		//advance the program counter
+		//and advance the program counter
 		this._pc += 2;
-
-		//and return a success
-		return true;
 	}
 	
 	/**
@@ -334,10 +370,8 @@ export class CPU {
 	 * (constant not-equals comparison)
 	 *
 	 * @param opcode The opcode to execute
-	 *
-	 * @returns Whether the opcode executed successfully
 	 */
-	private async execute0x4XNN(opcode: number): Promise<boolean> {
+	private execute0x4XNN(opcode: number): void {
 		//get the index of the register to compare
 		let idx = (opcode & 0x0F00) >> 8;
 
@@ -349,11 +383,8 @@ export class CPU {
 			this._pc += 2;
 		}
 
-		//advance the program counter
+		//and advance the program counter
 		this._pc += 2;
-
-		//and return a success
-		return true;
 	}
 
 	/**
@@ -361,10 +392,8 @@ export class CPU {
 	 * (register equals comparison)
 	 *
 	 * @param opcode The opcode to execute
-	 *
-	 * @returns Whether the opcode executed successfully
 	 */
-	private async execute0x5XY0(opcode: number): Promise<boolean> {
+	private execute0x5XY0(opcode: number): void {
 		//get the index of register X
 		let xidx = (opcode & 0x0F00) >> 8;
 
@@ -376,21 +405,16 @@ export class CPU {
 			this._pc += 2;
 		}
 
-		//advance the program counter
+		//and advance the program counter
 		this._pc += 2;
-
-		//and return a success
-		return true;
 	}
 
 	/**
 	 * Executes a opcode of the form 0x6XNN (constant assignment)
 	 *
 	 * @param opcode The opcode to execute
-	 *
-	 * @returns Whether the opcode executed successfully
 	 */
-	private async execute0x6XNN(opcode: number): Promise<boolean> {
+	private execute0x6XNN(opcode: number): void {
 		//get the index of the register
 		let idx = (opcode & 0x0F00) >> 8;
 
@@ -400,21 +424,16 @@ export class CPU {
 		//update the register value
 		this._regs[idx].value = val;
 
-		//advance the program counter
+		//and advance the program counter
 		this._pc += 2;
-
-		//and return a success
-		return true;
 	}
 
 	/**
 	 * Executes an opcode of the form 0x7XNN (constant addition)
 	 *
 	 * @param opcode The opcode to execute
-	 *
-	 * @returns Whether the opcode executed successfully
 	 */
-	private async execute0x7XNN(opcode: number): Promise<boolean> {
+	private execute0x7XNN(opcode: number): void {
 		//get the index of the register to modify
 		let idx = (opcode & 0x0F00) >> 8;
 
@@ -427,21 +446,16 @@ export class CPU {
 		//mask the updated register
 		this._regs[idx].value &= 0xFF;
 
-		//advance the program counter
+		//and advance the program counter
 		this._pc += 2;
-
-		//and return a success
-		return true;
 	}
 
 	/**
 	 * Executes an opcode of the form 0x8XXX (register operations)
 	 *
 	 * @param opcode The opcode to evaluate
-	 *
-	 * @returns Whether the opcode evaluated successfully
 	 */
-	private async execute0x8XXX(opcode: number): Promise<boolean> {
+	private execute0x8XXX(opcode: number): void {
 		//handle different opcodes
 		switch(opcode & 0x000F) {
 			//register assignment (0x8XY0)
@@ -672,25 +686,19 @@ export class CPU {
 			default: {
 				console.log('Unknown opcode [0x8000]: 0x'
 						+ opcode.toString(16));
-				return false;
 			}
 		}
 
-		//advance the program counter
+		//and advance the program counter
 		this._pc += 2;
-
-		//and return a success
-		return true;
 	}
 
 	/**
 	 * Executes an opcode of the form 0x9XY0 (register NE comparison)
 	 *
 	 * @param opcode The opcode to evaluate
-	 *
-	 * @returns Whether the opcode evaluated successfully
 	 */
-	private async execute0x9XY0(opcode: number): Promise<boolean> {
+	private execute0x9XY0(opcode: number): void {
 		//get the X register index
 		let xidx = (opcode & 0x0F00) >> 8;
 
@@ -702,63 +710,48 @@ export class CPU {
 			this._pc += 2;
 		}
 
-		//advance the program counter
+		//and advance the program counter
 		this._pc += 2;
-
-		//and return a success
-		return true;
 	}
 
 	/**
 	 * Executes an opcode of the form 0xANNN (index register set)
 	 *
 	 * @param opcode The opcode to evaluate
-	 *
-	 * @returns Whether the opcode evaluated successfully
 	 */
-	private async execute0xANNN(opcode: number): Promise<boolean> {
+	private execute0xANNN(opcode: number): void {
 		//get the value to set I to
 		let val = opcode & 0x0FFF;
 
 		//set the I register to the value
 		this._I = val;
 
-		//advance the program counter
+		//and advance the program counter
 		this._pc += 2;
-
-		//and return a success
-		return true;
 	}
 
 	/**
 	 * Executes an opcode of the form 0xBNNN (calculated goto)
 	 *
 	 * @param opcode The opcode to evaluate
-	 *
-	 * @returns Whether the opcode evaluated successfully
 	 */
-	private async execute0xBNNN(opcode: number): Promise<boolean> {
+	private execute0xBNNN(opcode: number): void {
 		//get the value to add to V0
 		let val = opcode & 0x0FFF;
 
 		//calculate the address to jump to
 		let addr = this._regs[0x0].value + val;
 
-		//update the program counter
+		//and update the program counter
 		this._pc = addr;
-
-		//and return a success
-		return true;
 	}
 
 	/**
 	 * Executes an opcode of the form 0xCXNN (random number generation)
 	 *
 	 * @param opcode The opcode to evaluate
-	 *
-	 * @returns Whether the opcode evaluated successfully
 	 */
-	private async execute0xCXNN(opcode: number): Promise<boolean> {
+	private execute0xCXNN(opcode: number): void {
 		//get the index of the target register
 		let idx = (opcode & 0x0F00) >> 8;
 
@@ -771,21 +764,16 @@ export class CPU {
 		//update the target register
 		this._regs[idx].value = rval & aval;
 
-		//advance the program counter
+		//and advance the program counter
 		this._pc += 2;
-
-		//and return a success
-		return true;
 	}
 
 	/**
 	 * Executes an opcode of the form 0xDXYN (sprite drawing)
 	 *
 	 * @param opcode The opcode to evaluate
-	 *
-	 * @returns Whether the opcode evaluated successfully
 	 */
-	private async execute0xDXYN(opcode: number): Promise<boolean> {
+	private execute0xDXYN(opcode: number): void {
 		//get the height of the sprite
 		let h = opcode & 0x000F;
 
@@ -812,21 +800,16 @@ export class CPU {
 			this._regs[0xF].value = 0;
 		}
 
-		//advance the program counter
+		//and advance the program counter
 		this._pc += 2;
-
-		//and return a success
-		return true;
 	}
 
 	/**
 	 * Executes an opcode of the form 0xEXXX (key comparisons)
 	 *
 	 * @param opcode The opcode to evaluate
-	 *
-	 * @returns Whether the opcode evaluated successfully
 	 */
-	private async execute0xEXXX(opcode: number): Promise<boolean> {
+	private execute0xEXXX(opcode: number): void {
 		//handle different opcodes
 		switch(opcode & 0x00FF) {
 			//key is down (0xEX9E)
@@ -871,26 +854,20 @@ export class CPU {
 			default: {
 				console.log('Unknown opcode [0xE000]: 0x'
 						+ opcode.toString(16));
-				return false;
 			}
 
 		}
 
-		//advance the program counter
+		//and advance the program counter
 		this._pc += 2;
-
-		//and return a success
-		return true;
 	}
 
 	/**
 	 * Executes opcodes of the form 0xFXXX (miscellaneous operations)
 	 *
 	 * @param opcode The opcode to evaluate
-	 *
-	 * @returns Whether the opcode evaluated successfully
 	 */
-	private async execute0xFXXX(opcode: number): Promise<boolean> {
+	private execute0xFXXX(opcode: number): void {
 		//handle different opcodes
 		switch(opcode & 0x00FF) {
 			//get delay timer (0xFX07)
@@ -909,20 +886,11 @@ export class CPU {
 
 			//await keypress (0xFX0A)
 			case 0x000A: {
-				//get the index of the register to update
-				let idx = (opcode & 0x0F00) >> 8;
+				//clear the key states
+				this._keyMgr.clearStates();
 
-				//wait for a keypress
-				let key: Keycode | null = null;
-				while(key === null) {
-					key = await this._keyMgr.getKey();
-				}
-
-				//convert the keycode to an integer
-				let kc = <number>key;
-
-				//and update the register
-				this._regs[idx].value = kc;
+				//block for an input event
+				this._blockedForInput = true;
 
 				break;
 			}
@@ -1064,15 +1032,11 @@ export class CPU {
 			default: {
 				console.log('Unknown opcode [0xF000]: 0x'
 						+ opcode.toString(16));
-				return false;
 			}
 		}
 
-		//advance the program counter
+		//and advance the program counter
 		this._pc += 2;
-
-		//and return a success
-		return true;
 	}
 }
 

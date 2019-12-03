@@ -35,11 +35,6 @@ export class KeyManager {
 	 */
 	private _keys: Key[];
 
-	/**
-	 * Lambda that waits for a keypress
-	 */
-	private _readKey: Function;
-
 	//methods
 	
 	/**
@@ -53,11 +48,6 @@ export class KeyManager {
 		for(let c = Keycode.K1; c <= Keycode.KV; c++) {
 			this._keys.push(new Key(c));
 		}
-
-		//initialize the keypress handler
-		this._readKey = () => new Promise(resolve =>
-			window.addEventListener('keypress', resolve,
-				{once: true}));
 
 		//and register keypress callbacks
 		this.registerCallbacks();
@@ -84,31 +74,6 @@ export class KeyManager {
 	}
 
 	/**
-	 * Waits for a keypress and returns the pressed key's `Keycode`
-	 *
-	 * @returns The pressed key's `Keycode`, wrapped in a `Promise`
-	 */
-	public async getKey(): Promise<Keycode | null> {
-		//clear the key states
-		this.clearStates();
-
-		//await a keypress
-		let code = await this._readKey();
-
-		//convert the input character to a keycode
-		let str = String.fromCharCode(code.which).toLowerCase();
-		let kc = KeyManager.codeForChar(str);
-
-		//update the key states
-		if(kc !== null) {
-			this._keys[kc].press();
-		}
-
-		//and return the key
-		return kc;
-	}
-
-	/**
 	 * Clears the states of all managed keys
 	 */
 	public clearStates(): void {
@@ -118,14 +83,27 @@ export class KeyManager {
 	}
 
 	/**
+	 * Checks to see if any keys are down
+	 *
+	 * @returns Whether any keys are down
+	 */
+	public keysAreDown(): boolean {
+		for(let i = 0; i < this._keys.length; i++) {
+			if(this._keys[i].state === KeyState.DOWN) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
 	 * Registers keypress callbacks
 	 */
 	private registerCallbacks(): void {
-		let that = this;
 		window.addEventListener('keydown',
-					that.keydown.bind(that), false);
+					this.keydown.bind(this), false);
 		window.addEventListener('keyup',
-					that.keyup.bind(that), false);
+					this.keyup.bind(this), false);
 	}
 
 	/**
@@ -141,7 +119,7 @@ export class KeyManager {
 		let key = KeyManager.codeForChar(kc);
 
 		//and press the corresponding key
-		if(key) {
+		if(key !== null) {
 			this._keys[key].press();
 		}
 	}
@@ -159,7 +137,7 @@ export class KeyManager {
 		let key = KeyManager.codeForChar(kc);
 
 		//and release the corresponding key
-		if(key) {
+		if(key !== null) {
 			this._keys[key].release();
 		}
 	}
