@@ -36,7 +36,8 @@ export function chooseFile(): string | undefined {
 		openDirectory: false,
 		multiSelections: false,
 		filters: [
-			{name: 'Chip-8 ROMs', extensions: ['c8', 'C8']}
+			{name: 'Chip-8 ROMs', extensions: ['c8', 'C8', 
+							'ch8', 'CH8']}
 		]
 	};
 
