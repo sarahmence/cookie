@@ -2,7 +2,7 @@
   "description": "Open-source Chip-8 emulator",
   "author": "Andrew Davis",
   "name": "Cookie",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "build": {
     "appId": "com.ahdavis.cookie",
     "productName": "Cookie",
