@@ -45,7 +45,7 @@ export class KeyManager {
 		this._keys = new Array<Key>();
 
 		//initialize it
-		for(let c = Keycode.K1; c <= Keycode.KV; c++) {
+		for(let c = Keycode.K0; c <= Keycode.KF; c++) {
 			this._keys.push(new Key(c));
 		}
 
@@ -166,55 +166,55 @@ export class KeyManager {
 				break;
 			}
 			case '4': {
-				ret = Keycode.K4;
-				break;
-			}
-			case 'q': {
-				ret = Keycode.KQ;
-				break;
-			}
-			case 'w': {
-				ret = Keycode.KW;
-				break;
-			}
-			case 'e': {
-				ret = Keycode.KE;
-				break;
-			}
-			case 'r': {
-				ret = Keycode.KR;
-				break;
-			}
-			case 'a': {
-				ret = Keycode.KA;
-				break;
-			}
-			case 's': {
-				ret = Keycode.KS;
-				break;
-			}
-			case 'd': {
-				ret = Keycode.KD;
-				break;
-			}
-			case 'f': {
-				ret = Keycode.KF;
-				break;
-			}
-			case 'z': {
-				ret = Keycode.KZ;
-				break;
-			}
-			case 'x': {
-				ret = Keycode.KX;
-				break;
-			}
-			case 'c': {
 				ret = Keycode.KC;
 				break;
 			}
+			case 'q': {
+				ret = Keycode.K4;
+				break;
+			}
+			case 'w': {
+				ret = Keycode.K5;
+				break;
+			}
+			case 'e': {
+				ret = Keycode.K6;
+				break;
+			}
+			case 'r': {
+				ret = Keycode.KD;
+				break;
+			}
+			case 'a': {
+				ret = Keycode.K7;
+				break;
+			}
+			case 's': {
+				ret = Keycode.K8;
+				break;
+			}
+			case 'd': {
+				ret = Keycode.K9;
+				break;
+			}
+			case 'f': {
+				ret = Keycode.KE;
+				break;
+			}
+			case 'z': {
+				ret = Keycode.KA;
+				break;
+			}
+			case 'x': {
+				ret = Keycode.K0;
+				break;
+			}
+			case 'c': {
+				ret = Keycode.KB;
+				break;
+			}
 			case 'v': {
-				ret = Keycode.KV;
+				ret = Keycode.KF;
 				break;
 			}
 			default: {

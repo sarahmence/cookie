@@ -196,8 +196,8 @@ export class CPU {
 				//check for keydown
 				if(this._keyMgr.keysAreDown()) {
 					//loop and get the down key
-					for(let k = Keycode.K1;
-						k <= Keycode.KV; k++) {
+					for(let k = Keycode.K0;
+						k <= Keycode.KF; k++) {
 						if(this._keyMgr
 						.stateForKey(k) ===
 						KeyState.DOWN) {

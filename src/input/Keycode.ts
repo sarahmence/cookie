@@ -26,22 +26,22 @@
  * An input keycode
  */
 export enum Keycode {
-	K1 = 0x0, //numeric 1 key
-	K2 = 0x1, //numeric 2 key
-	K3 = 0x2, //numeric 3 key
-	K4 = 0x3, //numeric 4 key
-	KQ = 0x4, //Q key
-	KW = 0x5, //W key
-	KE = 0x6, //E key
-	KR = 0x7, //R key
-	KA = 0x8, //A key
-	KS = 0x9, //S key
-	KD = 0xA, //D key
-	KF = 0xB, //F key
-	KZ = 0xC, //Z key
-	KX = 0xD, //X key
-	KC = 0xE, //C key
-	KV = 0xF  //V key
+	K0 = 0x0, //X key
+	K1 = 0x1, //numeric 1 key
+	K2 = 0x2, //numeric 2 key
+	K3 = 0x3, //numeric 3 key
+	K4 = 0x4, //Q key
+	K5 = 0x5, //W key
+	K6 = 0x6, //E key
+	K7 = 0x7, //A key
+	K8 = 0x8, //S key
+	K9 = 0x9, //D key
+	KA = 0xA, //Z key
+	KB = 0xB, //C key
+	KC = 0xC, //numeric 4 key
+	KD = 0xD, //R key
+	KE = 0xE, //F key
+	KF = 0xF  //V key
 }
 
 //end of file
