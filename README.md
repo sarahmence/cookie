@@ -16,8 +16,26 @@ files are located in the repository, and more are available online.
 ## Controls
 
 The emulator uses a sixteen-key hex controller. This is accomplished 
-through the 1-4, Q-R, A-F, and Z-V keys on your keyboard. The 1 key 
-corresponds to button `0`, and the V key corresponds to button `F`.
+through the 1-4, Q-R, A-F, and Z-V keys on your keyboard. The key mapping
+is as follows:
+
+Emulator keys:
+
+```
+1 2 3 C	
+4 5 6 D	
+7 8 9 E
+A 0 B F
+```
+
+Keyboard keys:
+
+```
+1 2 3 4
+Q W E R
+A S D F
+Z X C V
+```
 
 # Contributing
 
