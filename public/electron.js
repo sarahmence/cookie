@@ -26,7 +26,7 @@ const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
 const path = require("path");
 const isDev = require("electron-is-dev");
-const MainConstants = require("./MainConstants").MainConstants;
+const MainConstants = require("../src/util/MainConstants").MainConstants;
 
 //declare the main window
 let mainWindow;
