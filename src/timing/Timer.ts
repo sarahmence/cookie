@@ -65,7 +65,7 @@ export abstract class Timer {
 	 */
 	public set ticks(time: number) {
 		//validate the time
-		if(time <= 0) {
+		if(time < 0) {
 			return;
 		}
 
@@ -79,9 +79,11 @@ export abstract class Timer {
 		}
 
 		//and set the interval
-		let that = this;
-		this._interval = window.setInterval(
+		if(this._ticks > 0) {
+			let that = this;
+			this._interval = window.setInterval(
 					that.onTick.bind(that), 17);
+		}
 	}
 
 	/**
