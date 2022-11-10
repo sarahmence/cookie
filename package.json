@@ -65,7 +65,7 @@
   "devDependencies": {
     "@types/mainloop.js": "^1.0.5",
     "concurrently": "^5.0.0",
-    "electron": "^7.1.2",
+    "electron": "^18.3.7",
     "electron-builder": "^21.2.0",
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.15.1",
